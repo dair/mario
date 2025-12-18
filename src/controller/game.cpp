@@ -68,7 +68,7 @@ bool Game::check_static_collisions(Collisionable* obj) const noexcept {
 }
 
 void Game::check_vertically_static_collisions() noexcept {
-	if (mario->has_collision(static_objs[static_objs.size() - 1])) {
+	if (mario != nullptr && !static_objs.empty() && mario->has_collision(static_objs[static_objs.size() - 1])) {
 		is_level_end_ = true;
 	}
 	
