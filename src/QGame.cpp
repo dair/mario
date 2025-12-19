@@ -1,16 +1,23 @@
 #include "QGame.h"
 #include "QUIFactory.h"
 #include <QDebug>
+#include <memory>
+#include "QGameMap.h"
 
-QGame::QGame(QObject *parent)
+QGame::QGame(QWidget* widgetParent, QObject *parent)
     : QObject{parent},
       game() {
     biv::os::init_settings();
 
-    ui_factory = new QUIFactory(&game);
+	ui_factory = new QUIFactory(&game, widgetParent);
     game_map = ui_factory->get_game_map();
     game_level = new biv::FirstLevel(ui_factory);
     mario = ui_factory->get_mario();
+
+	auto qGameMap = dynamic_cast<QGameMap*>(game_map);
+	if (qGameMap != nullptr) {
+		QObject::connect(qGameMap, &QGameMap::userInput, this, &QGame::onKeyEvent);
+	}
 }
 
 QGame::~QGame() {
@@ -19,7 +26,6 @@ QGame::~QGame() {
 }
 
 void QGame::onTimer() {
-    qDebug() << "onTimer";
     // 3. Обновление внутреннего состояния игры
     game.update();
     game.move_objs_horizontally();
@@ -59,3 +65,30 @@ void QGame::onTimer() {
         emit gameOver();
     }
 }
+
+void QGame::onKeyEvent(biv::os::UserInput input) {
+	switch (input) {
+		case biv::os::UserInput::MAP_LEFT:
+			mario->move_map_left();
+			if (!game.check_static_collisions(mario)) {
+				game.move_map_left();
+			}
+			mario->move_map_right();
+			break;
+		case biv::os::UserInput::MAP_RIGHT:
+			mario->move_map_right();
+			if (!game.check_static_collisions(mario)) {
+				game.move_map_right();
+			}
+			mario->move_map_left();
+			break;
+		case biv::os::UserInput::MARIO_JUMP:
+			mario->jump();
+			break;
+		case biv::os::UserInput::EXIT:
+			game.finish();
+			break;
+	}
+
+}
+

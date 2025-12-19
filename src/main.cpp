@@ -21,14 +21,16 @@
 
 int main(int argc, char** argv) {
     QApplication app(argc, argv);
-    QGame qGame;
-    QTimer* timer = new QTimer(&app);
-    timer->setInterval(10);
-    QObject::connect(timer, &QTimer::timeout, &qGame, &QGame::onTimer);
-    QObject::connect(&qGame, &QGame::gameOver, &app, &QApplication::quit);
-    timer->start();
 
     QGameWindow window;
+	window.setBaseSize(2000, 200);
+	QGame qGame(&window, &app);
+	QTimer* timer = new QTimer(&app);
+	timer->setInterval(10);
+	QObject::connect(timer, &QTimer::timeout, &qGame, &QGame::onTimer);
+	QObject::connect(&qGame, &QGame::gameOver, &app, &QApplication::quit);
+	timer->start();
+
     window.show();
 
     int ret = app.exec();
@@ -37,37 +39,3 @@ int main(int argc, char** argv) {
     delete timer;
     return ret;
 }
-
-//int game_main() {
-//	// 1. Установка параметров игры
-//	using namespace std::chrono_literals;
-	
-//	biv::os::UserInput user_input;
-//	do {
-//		// 2. Получение пользовательского ввода
-//		user_input = biv::os::get_user_input();
-//		switch (user_input) {
-//			case biv::os::UserInput::MAP_LEFT:
-//				mario->move_map_left();
-//				if (!game.check_static_collisions(mario)) {
-//					game.move_map_left();
-//				}
-//				mario->move_map_right();
-//				break;
-//			case biv::os::UserInput::MAP_RIGHT:
-//				mario->move_map_right();
-//				if (!game.check_static_collisions(mario)) {
-//					game.move_map_right();
-//				}
-//				mario->move_map_left();
-//				break;
-//			case biv::os::UserInput::MARIO_JUMP:
-//				mario->jump();
-//				break;
-//			case biv::os::UserInput::EXIT:
-//				game.finish();
-//				break;
-//		}
-		
-	
-//}

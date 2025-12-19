@@ -24,11 +24,12 @@ private:
     biv::Mario* mario;
 
 public:
-    explicit QGame(QObject *parent = nullptr);
+	explicit QGame(QWidget* widgetParent, QObject *parent = nullptr);
     virtual ~QGame();
 
 public slots:
     void onTimer();
+	void onKeyEvent(biv::os::UserInput input);
 
 signals:
     void gameOver();

@@ -1,5 +1,4 @@
-#ifndef QMARIO_H
-#define QMARIO_H
+#pragma once
 
 #include <QWidget>
 #include "QUIObject.h"
@@ -14,5 +13,3 @@ public:
 signals:
 
 };
-
-#endif // QMARIO_H

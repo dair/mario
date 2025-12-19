@@ -9,7 +9,7 @@ class QGameWindow : public QWidget
     Q_OBJECT
 public:
     explicit QGameWindow(QWidget *parent = nullptr);
-
+	void resizeEvent(QResizeEvent *event) override;
 signals:
 
 };

@@ -1,16 +1,14 @@
-#ifndef QUIOBJECT_H
-#define QUIOBJECT_H
+#pragma once
 
 #include <QWidget>
+#include "rect.hpp"
 
-class QUIObject : public QWidget
+class QUIObject : public QWidget, virtual public biv::Rect
 {
     Q_OBJECT
 public:
-    explicit QUIObject(QWidget *parent = nullptr);
+	explicit QUIObject(QColor color, QWidget *parent = nullptr);
 
 signals:
 
 };
-
-#endif // QUIOBJECT_H

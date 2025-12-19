@@ -1,14 +1,14 @@
 target_sources(${PROJECT_NAME}
 	PRIVATE
-	#		console_box.cpp
-	#		console_enemy.cpp
-	#	console_jump_enemy.cpp
-	#	console_fly_enemy.cpp
-	#	console_full_box.cpp
+	QBox.cpp
+	QEnemy.cpp
+	QJumpEnemy.cpp
+	QFlyEnemy.cpp
+	QFullBox.cpp
 	QMario.cpp
         QUIObject.cpp
-	#	console_money.cpp
-	#	console_ship.cpp
+	QMoney.cpp
+	QShip.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE

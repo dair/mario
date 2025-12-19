@@ -1,24 +1,34 @@
-#ifndef QGAMEMAP_H
-#define QGAMEMAP_H
+#pragma once
 
-#include <QObject>
+#include <QWidget>
 #include <unordered_set>
 #include <memory>
 #include "game_map.hpp"
 #import "QUIObject.h"
+#include "user_input.hpp"
 
-class QGameMap : public QObject, public biv::GameMap
+class QGridLayout;
+
+class QGameMap : public QWidget, public biv::GameMap
 {
     Q_OBJECT
 private:
+	QSize cellSize{0, 0};
+
     std::unordered_set<std::shared_ptr<QUIObject>> objects;
+	void positionObject(std::shared_ptr<QUIObject> object);
+
+protected:
+	virtual void keyPressEvent(QKeyEvent *event) override;
 
 public:
     QGameMap(
             const int height,
             const int width,
-            QObject *parent=nullptr
+			QWidget *parent=nullptr
             );
+
+	void resizeEvent(QResizeEvent *event) override;
 
     virtual void clear() noexcept;
     virtual void refresh() noexcept;
@@ -27,6 +37,7 @@ public:
 
     void remove_obj(std::shared_ptr<QUIObject> object);
     void add_obj(std::shared_ptr<QUIObject> object);
-};
 
-#endif // QGAMEMAP_H
+signals:
+	void userInput(biv::os::UserInput input);
+};
