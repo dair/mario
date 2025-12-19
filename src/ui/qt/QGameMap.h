@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <memory>
 #include "game_map.hpp"
-#import "QUIObject.h"
+#include "QUIObject.h"
 #include "user_input.hpp"
 
 class QGridLayout;
