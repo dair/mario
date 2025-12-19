@@ -18,8 +18,11 @@ private:
     std::unordered_set<std::shared_ptr<QUIObject>> objects;
 	void positionObject(std::shared_ptr<QUIObject> object);
 
+	int currentInput = (int)biv::os::UserInput::NO_INPUT;
+
 protected:
 	virtual void keyPressEvent(QKeyEvent *event) override;
+	virtual void keyReleaseEvent(QKeyEvent *event) override;
 
 public:
     QGameMap(
@@ -39,5 +42,5 @@ public:
     void add_obj(std::shared_ptr<QUIObject> object);
 
 signals:
-	void userInput(biv::os::UserInput input);
+	void userInput(int input);
 };

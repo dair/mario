@@ -70,24 +70,48 @@ void QGameMap::positionObject(std::shared_ptr<QUIObject> object) {
 }
 
 void QGameMap::keyPressEvent(QKeyEvent *event) {
-	qDebug() << event->key();
-	biv::os::UserInput input;
+	int input;
 	switch (event->key()) {
-		case Qt::Key_Up:
-			input = biv::os::UserInput::MARIO_JUMP;
-			break;
-		case Qt::Key_Left:
-			input = biv::os::UserInput::MAP_RIGHT;
-			break;
-		case Qt::Key_Right:
-			input = biv::os::UserInput::MAP_LEFT;
-			break;
-		case Qt::Key_Escape:
-			input = biv::os::UserInput::EXIT;
-			break;
+	case Qt::Key_Up:
+		input = currentInput | (int)biv::os::UserInput::MARIO_JUMP;
+		break;
+	case Qt::Key_Left:
+		input = currentInput | (int)biv::os::UserInput::MAP_RIGHT;
+		break;
+	case Qt::Key_Right:
+		input = currentInput | (int)biv::os::UserInput::MAP_LEFT;
+		break;
 	default:
 		return;
 	}
 
-	emit userInput(input);
+	if (input != currentInput) {
+		currentInput = input;
+		emit userInput(input);
+	}
+}
+
+void QGameMap::keyReleaseEvent(QKeyEvent *event) {
+	int input;
+	switch (event->key()) {
+	case Qt::Key_Escape:
+		input = (int)biv::os::UserInput::EXIT;
+		break;
+	case Qt::Key_Up:
+		input = currentInput & (~(int)biv::os::UserInput::MARIO_JUMP);
+		break;
+	case Qt::Key_Left:
+		input = currentInput & (~(int)biv::os::UserInput::MAP_RIGHT);
+		break;
+	case Qt::Key_Right:
+		input = currentInput & (~(int)biv::os::UserInput::MAP_LEFT);
+		break;
+	default:
+		return;
+	}
+
+	if (input != currentInput) {
+		currentInput = input;
+		emit userInput(input);
+	}
 }

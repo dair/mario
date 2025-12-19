@@ -26,6 +26,8 @@ QGame::~QGame() {
 }
 
 void QGame::onTimer() {
+	// 2. Обработка пользовательского ввода
+	processKeyEvent();
     // 3. Обновление внутреннего состояния игры
     game.update();
     game.move_objs_horizontally();
@@ -66,29 +68,34 @@ void QGame::onTimer() {
     }
 }
 
-void QGame::onKeyEvent(biv::os::UserInput input) {
-	switch (input) {
-		case biv::os::UserInput::MAP_LEFT:
-			mario->move_map_left();
-			if (!game.check_static_collisions(mario)) {
-				game.move_map_left();
-			}
-			mario->move_map_right();
-			break;
-		case biv::os::UserInput::MAP_RIGHT:
-			mario->move_map_right();
-			if (!game.check_static_collisions(mario)) {
-				game.move_map_right();
-			}
-			mario->move_map_left();
-			break;
-		case biv::os::UserInput::MARIO_JUMP:
-			mario->jump();
-			break;
-		case biv::os::UserInput::EXIT:
-			game.finish();
-			break;
+void QGame::processKeyEvent() {
+	if ((keyEvents & (int)biv::os::UserInput::MAP_LEFT) == (int)biv::os::UserInput::MAP_LEFT) {
+		mario->move_map_left();
+		if (!game.check_static_collisions(mario)) {
+			game.move_map_left();
+		}
+		mario->move_map_right();
 	}
 
+	if ((keyEvents & (int)biv::os::UserInput::MAP_RIGHT) == (int)biv::os::UserInput::MAP_RIGHT) {
+		mario->move_map_right();
+		if (!game.check_static_collisions(mario)) {
+			game.move_map_right();
+		}
+		mario->move_map_left();
+	}
+
+	if ((keyEvents & (int)biv::os::UserInput::MARIO_JUMP) == (int)biv::os::UserInput::MARIO_JUMP) {
+		mario->jump();
+	}
+}
+
+void QGame::onKeyEvent(int input) {
+	if (input == (int)biv::os::UserInput::EXIT) {
+		game.finish();
+		return;
+	}
+
+	keyEvents = input;
 }
 

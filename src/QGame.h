@@ -22,6 +22,9 @@ private:
     biv::GameMap* game_map;
     biv::GameLevel* game_level;
     biv::Mario* mario;
+	int keyEvents;
+
+	void processKeyEvent();
 
 public:
 	explicit QGame(QWidget* widgetParent, QObject *parent = nullptr);
@@ -29,7 +32,7 @@ public:
 
 public slots:
     void onTimer();
-	void onKeyEvent(biv::os::UserInput input);
+	void onKeyEvent(int input);
 
 signals:
     void gameOver();
